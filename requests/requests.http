@@ -1,0 +1,16 @@
+### get posts
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query{person(id: \"4201\") {posts {title content likeCount}}}"
+}
+
+### greeting
+POST http://localhost:8080/graphql
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+  "query": "mutation {createPost(title: \"Test title\", content: \"Test content\"){id title author {id name}}}"
+}
