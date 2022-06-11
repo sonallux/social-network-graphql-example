@@ -32,6 +32,6 @@ public class DefaultDataInitializer {
         friendshipService.addFriendship(jonas.id(), hugo.id());
         friendshipService.addFriendship(max.id(), erika.id());
 
-        postService.createPost(jonas.id(), "Hallo SCC!", "Hiermit Grüße ich alle von der SCC!");
+        postService.createPost(jonas.id(), "Hallo Welt!", "Hiermit Grüße ich alle, die dabei sind!");
     }
 }

@@ -46,7 +46,9 @@ public class PersonGraphQLController {
     @MutationMapping
     @PreAuthorize("hasRole('USER')")
     public Mono<Integer> addFriendship(@Argument String personId, Authentication authentication) {
-        personService.getPerson(personId).orElseThrow(() -> new IllegalArgumentException("Unknown person ID: " + personId));
+        if (!personService.personExists(personId)) {
+            throw new IllegalArgumentException("Unknown person id: " + personId);
+        }
 
         var myId = authentication.getName();
         if (myId.equals(personId)) {
@@ -60,7 +62,9 @@ public class PersonGraphQLController {
     @MutationMapping
     @PreAuthorize("hasRole('USER')")
     public Mono<Integer> removeFriendship(@Argument String personId, Authentication authentication) {
-        personService.getPerson(personId).orElseThrow(() -> new IllegalArgumentException("Unknown person 1"));
+        if (!personService.personExists(personId)) {
+            throw new IllegalArgumentException("Unknown person id: " + personId);
+        }
 
         var myId = authentication.getName();
         friendshipService.removeFriendship(myId, personId);
@@ -75,7 +79,9 @@ public class PersonGraphQLController {
     @SchemaMapping
     public List<Person> friends(Person person) {
         return friendshipService.getFriendIds(person.id()).stream()
-                .map(id -> personService.getPerson(id).orElse(null))
+                .map(personService::getPerson)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface PersonService {
+    boolean personExists(String id);
     Optional<Person> getPerson(String id);
     Map<String, Person> getPersons(Collection<String> ids);
     List<Person> searchPerson(String name);

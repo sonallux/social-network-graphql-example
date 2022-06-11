@@ -60,7 +60,9 @@ public class PostGraphQLController {
     @SchemaMapping
     public List<Person> likes(Post post) {
         return post.likes().stream()
-                .map(id -> personService.getPerson(id).orElse(null))
+                .map(personService::getPerson)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 

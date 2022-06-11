@@ -2,7 +2,7 @@ type Query {
     me: Person
     person(id: ID!): Person
     post(id: ID!): Post
-    searchPerson(name: String!): [Person]
+    searchPerson(name: String!): [Person!]!
 }
 
 type Mutation {
@@ -27,8 +27,8 @@ type Person {
     aboutMe: String
     employer: String
     position: String
-    friends: [Person]!
-    posts: [Post]!
+    friends: [Person!]!
+    posts: [Post!]!
 }
 
 type Post {
@@ -37,7 +37,7 @@ type Post {
     title: String!
     content: String!
     likeCount: Int!
-    likes: [Person]!
+    likes: [Person!]!
 }
 
 type FriendshipEvent {

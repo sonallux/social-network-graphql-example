@@ -1,6 +1,5 @@
 package de.sonallux.example.graphql.security;
 
-import de.sonallux.example.graphql.person.Person;
 import de.sonallux.example.graphql.person.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -18,14 +17,16 @@ public class AppUserDetailsService implements ReactiveUserDetailsService {
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        return Mono.justOrEmpty(personService.getPerson(username))
-                .map(this::createUserDetails);
+        if (!personService.personExists(username)) {
+            return Mono.empty();
+        }
+        return Mono.just(createUserDetails(username));
     }
 
-    private UserDetails createUserDetails(Person person) {
+    private UserDetails createUserDetails(String username) {
         return User.builder()
-                .username(person.id())
-                .password(person.id())
+                .username(username)
+                .password(username)
                 .passwordEncoder(passwordEncoder::encode)
                 .authorities("ROLE_USER")
                 .build();
