@@ -22,4 +22,4 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Build
-        run: ./mvnw -B package
+        run: mvn -B package
