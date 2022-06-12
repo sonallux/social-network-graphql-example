@@ -1,8 +1,8 @@
 type Query {
     me: Person
     person(id: ID!): Person
-    post(id: ID!): Post
     searchPerson(name: String!): [Person!]!
+    post(id: ID!): Post
 }
 
 type Mutation {
@@ -14,10 +14,11 @@ type Mutation {
 }
 
 type Subscription {
-    postCreated: Post
-    postLiked: PostLikedEvent
     friendshipAdded: FriendshipEvent
     friendshipRemoved: FriendshipEvent
+
+    postCreated: Post
+    postLiked: PostLikedEvent
 }
 
 type Person {

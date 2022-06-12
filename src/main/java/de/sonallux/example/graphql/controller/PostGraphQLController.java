@@ -26,6 +26,25 @@ public class PostGraphQLController {
         return postService.getPost(id);
     }
 
+    @SchemaMapping
+    public Optional<Person> author(Post post) {
+        return personService.getPerson(post.authorId());
+    }
+
+    @SchemaMapping
+    public int likeCount(Post post) {
+        return post.likes().size();
+    }
+
+    @SchemaMapping
+    public List<Person> likes(Post post) {
+        return post.likes().stream()
+                .map(personService::getPerson)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+    }
+
     @MutationMapping
     @PreAuthorize("hasRole('USER')")
     public Mono<Post> createPost(@Argument String title, @Argument String content, Authentication authentication) {
@@ -45,25 +64,6 @@ public class PostGraphQLController {
     public Mono<Post> likePost(@Argument String postId, Authentication authentication) {
         var personId = authentication.getName();
         return Mono.justOrEmpty(postService.likePost(postId, personId));
-    }
-
-    @SchemaMapping
-    public Optional<Person> author(Post post) {
-        return personService.getPerson(post.authorId());
-    }
-
-    @SchemaMapping
-    public int likeCount(Post post) {
-        return post.likes().size();
-    }
-
-    @SchemaMapping
-    public List<Person> likes(Post post) {
-        return post.likes().stream()
-                .map(personService::getPerson)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
     }
 
     @SubscriptionMapping
