@@ -6,6 +6,8 @@ type Query {
 }
 
 type Mutation {
+    createPerson(name: String!, age: Int, aboutMe: String, employer: String, position: String): Person
+
     addFriendship(personId: ID!): Int
     removeFriendship(personId: ID!): Int
 

@@ -22,16 +22,30 @@ public class DefaultDataInitializer {
         var max = new Person("4202", "Max Mustermann");
         var erika = new Person("4203", "Erika Musterfrau");
         var hugo = new Person("4204", "Hugo First", 42, "King of the Firsts", "Kingdom of the Firsts", "King");
+        var markus = new Person("4205", "Markus Mustermann");
+        var leon = new Person("4206", "Leon Mustermann");
 
         personService.createPerson(jonas);
         personService.createPerson(max);
         personService.createPerson(erika);
         personService.createPerson(hugo);
+        personService.createPerson(markus);
+        personService.createPerson(leon);
 
         friendshipService.addFriendship(jonas.id(), max.id());
+        friendshipService.addFriendship(jonas.id(), markus.id());
         friendshipService.addFriendship(jonas.id(), hugo.id());
         friendshipService.addFriendship(max.id(), erika.id());
+        friendshipService.addFriendship(max.id(), markus.id());
+        friendshipService.addFriendship(max.id(), leon.id());
+        friendshipService.addFriendship(erika.id(), markus.id());
+        friendshipService.addFriendship(erika.id(), leon.id());
 
-        postService.createPost(jonas.id(), "Hallo Welt!", "Hiermit Grüße ich alle, die dabei sind!");
+        var jonasPost = postService.createPost(jonas.id(), "Hallo Welt!", "Hiermit Grüße ich alle, die dabei sind!");
+        postService.likePost(jonasPost.id(), hugo.id());
+
+        var maxPost = postService.createPost(max.id(), "Wer bin ich?", "Ich bin eine fiktive Person, die oft auf Musterausweisen oder Dokumenten verwendet wird.");
+        postService.likePost(maxPost.id(), erika.id());
+        postService.likePost(maxPost.id(), leon.id());
     }
 }
