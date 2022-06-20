@@ -65,7 +65,9 @@ public class PersonGraphQLControllerTest {
                 .path("person.id").entity(String.class).isEqualTo("4201")
                 .path("person.friends[0].id").entity(String.class).isEqualTo("4202")
                 .path("person.friends[0].name").entity(String.class).isEqualTo("Max Mustermann")
-                .path("person.friends[1].id").entity(String.class).isEqualTo("4204")
-                .path("person.friends[1].name").entity(String.class).isEqualTo("Hugo First");
+                .path("person.friends[1].id").entity(String.class).isEqualTo("4205")
+                .path("person.friends[1].name").entity(String.class).isEqualTo("Markus Mustermann")
+                .path("person.friends[2].id").entity(String.class).isEqualTo("4204")
+                .path("person.friends[2].name").entity(String.class).isEqualTo("Hugo First");
     }
 }
