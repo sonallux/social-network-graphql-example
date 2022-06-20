@@ -44,8 +44,12 @@ public class PersonGraphQLController {
     }
 
     @SchemaMapping
-    public List<Post> posts(Person person) {
-        return postService.getPostsOfPerson(person.id());
+    public List<Post> posts(Person person, @Argument int limit, @Argument int offset) {
+        var list = postService.getPostsOfPerson(person.id());
+        if (offset < 0 || offset >= list.size()) {
+            return List.of();
+        }
+        return list.subList(offset, Math.min(list.size(), offset + limit));
     }
 
     @SchemaMapping

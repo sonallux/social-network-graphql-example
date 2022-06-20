@@ -58,16 +58,45 @@ public class PersonGraphQLControllerTest {
     @Test
     void testQueryFriendsOfPerson() {
         graphQlTester.document("""
-            query{person(id: "4201"){id friends{id name}}}
+            query{person(id: "4201"){friends{id name}}}
             """)
                 .execute()
                 .errors().satisfy(errors -> assertThat(errors).isEmpty())
-                .path("person.id").entity(String.class).isEqualTo("4201")
                 .path("person.friends[0].id").entity(String.class).isEqualTo("4202")
                 .path("person.friends[0].name").entity(String.class).isEqualTo("Max Mustermann")
                 .path("person.friends[1].id").entity(String.class).isEqualTo("4205")
                 .path("person.friends[1].name").entity(String.class).isEqualTo("Markus Mustermann")
                 .path("person.friends[2].id").entity(String.class).isEqualTo("4204")
                 .path("person.friends[2].name").entity(String.class).isEqualTo("Hugo First");
+    }
+
+    @Test
+    void testQueryPostsOfPerson() {
+        graphQlTester.document("""
+            query{person(id: "4201"){posts{id}}}
+            """)
+                .execute()
+                .errors().satisfy(errors -> assertThat(errors).isEmpty())
+                .path("person.posts[*].id").entityList(String.class).containsExactly("4700", "4701");
+    }
+
+    @Test
+    void testQueryPostsOfPersonWithLimit() {
+        graphQlTester.document("""
+            query{person(id: "4201"){posts(limit: 1){id}}}
+            """)
+                .execute()
+                .errors().satisfy(errors -> assertThat(errors).isEmpty())
+                .path("person.posts[*].id").entityList(String.class).containsExactly("4700");
+    }
+
+    @Test
+    void testQueryPostsOfPersonWithOffset() {
+        graphQlTester.document("""
+            query{person(id: "4201"){posts(offset: 1){id}}}
+            """)
+                .execute()
+                .errors().satisfy(errors -> assertThat(errors).isEmpty())
+                .path("person.posts[*].id").entityList(String.class).containsExactly("4701");
     }
 }

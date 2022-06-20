@@ -41,8 +41,10 @@ public class DefaultDataInitializer {
         friendshipService.addFriendship(erika.id(), markus.id());
         friendshipService.addFriendship(erika.id(), leon.id());
 
-        var jonasPost = postService.createPost(jonas.id(), "Hallo Welt!", "Hiermit Grüße ich alle, die dabei sind!");
-        postService.likePost(jonasPost.id(), hugo.id());
+        var jonasTestPost = postService.createPost(jonas.id(), "Test 123", "GraphQL with Spring Boot works!");
+
+        var jonasHelloWorldPost = postService.createPost(jonas.id(), "Hallo Welt!", "Hiermit Grüße ich alle, die dabei sind!");
+        postService.likePost(jonasHelloWorldPost.id(), hugo.id());
 
         var maxPost = postService.createPost(max.id(), "Wer bin ich?", "Ich bin eine fiktive Person, die oft auf Musterausweisen oder Dokumenten verwendet wird.");
         postService.likePost(maxPost.id(), erika.id());
