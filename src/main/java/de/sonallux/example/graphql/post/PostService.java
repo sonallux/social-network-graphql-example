@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface PostService {
     Optional<Post> getPost(String postId);
     List<Post> getPostsOfPerson(String personId);
+    List<List<Post>> getPostsOfPersons(List<String> personIds);
     Post createPost(String personId, String title, String content);
     Optional<Post> likePost(String postId, String personId);
 

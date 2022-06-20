@@ -1,6 +1,7 @@
 package de.sonallux.example.graphql.post;
 
 import de.sonallux.example.graphql.util.EventEmitter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import static de.sonallux.example.graphql.util.IdGenerator.nextId;
 
+@Slf4j
 @Service
 class InMemoryPostService implements PostService {
     private final Map<String, Post> posts = new HashMap<>();
@@ -24,6 +26,17 @@ class InMemoryPostService implements PostService {
 
     @Override
     public List<Post> getPostsOfPerson(String personId) {
+        log.info("getPostsOfPerson: {}", personId);
+        return getPostsOfPersonInternal(personId);
+    }
+
+    @Override
+    public List<List<Post>> getPostsOfPersons(List<String> personIds) {
+        log.info("getPostsOfPersons: {}", personIds);
+        return personIds.stream().map(this::getPostsOfPersonInternal).toList();
+    }
+
+    private List<Post> getPostsOfPersonInternal(String personId) {
         return posts.values().stream()
                 .filter(post -> post.authorId().equals(personId))
                 .toList();

@@ -44,24 +44,25 @@ public class PersonGraphQLController {
     }
 
     @SchemaMapping
-    public List<Post> posts(Person person, @Argument int limit, @Argument int offset) {
-        var list = postService.getPostsOfPerson(person.id());
-        if (offset < 0 || offset >= list.size()) {
-            return List.of();
-        }
-        return list.subList(offset, Math.min(list.size(), offset + limit));
+    public List<Post> posts(Person person) {
+        return postService.getPostsOfPerson(person.id());
     }
+
+    //@BatchMapping
+    public List<List<Post>> posts(List<Person> persons) {
+        var ids = persons.stream().map(Person::id).toList();
+        return postService.getPostsOfPersons(ids);
+    }
+
 
     @SchemaMapping
     public List<Person> friends(Person person) {
-        return friendshipService.getFriendIds(person.id()).stream()
-                .map(personService::getPerson)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+        var friendIds = friendshipService.getFriendIds(person.id());
+        var friends = personService.getPersons(friendIds);
+        return friendIds.stream().map(friends::get).toList();
     }
 
-    //@BatchMapping(typeName = "Person", field = "friends")
+    //@BatchMapping
     public List<List<Person>> friends(List<Person> persons) {
         var requiredPersons = new HashSet<String>();
 
