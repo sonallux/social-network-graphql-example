@@ -3,6 +3,7 @@ package de.sonallux.example.graphql.controller;
 import de.sonallux.example.graphql.person.Person;
 import de.sonallux.example.graphql.person.PersonService;
 import de.sonallux.example.graphql.post.Post;
+import de.sonallux.example.graphql.post.PostLikedEvent;
 import de.sonallux.example.graphql.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.*;
@@ -69,5 +70,10 @@ public class PostGraphQLController {
     @SubscriptionMapping
     public Flux<Post> postCreated() {
         return postService.postCreatedEvents();
+    }
+
+    @SubscriptionMapping
+    public Flux<PostLikedEvent> postLiked() {
+        return postService.postLikedEvents();
     }
 }
